@@ -43,7 +43,11 @@
 
 #include <stdexcept>
 #include <sys/types.h>
+#ifndef WIN32
 #include <unistd.h>
+#else
+#include <process.h>
+#endif
 #include <iostream>
 
 namespace rqt_gui_cpp {
@@ -118,8 +122,11 @@ void RosCppPluginProvider::init_node()
     char** argv = 0;
     std::stringstream name;
     name << "rqt_gui_cpp_node_";
+#ifndef WIN32
     name << getpid();
-    qDebug("RosCppPluginProvider::init_node() initialize ROS node '%s'", name.str().c_str());
+#else
+    name << _getpid();
+#endif    qDebug("RosCppPluginProvider::init_node() initialize ROS node '%s'", name.str().c_str());
     ros::init(argc, argv, name.str().c_str(), ros::init_options::NoSigintHandler);
     wait_for_master();
     ros::start();
