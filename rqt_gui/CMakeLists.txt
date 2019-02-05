@@ -11,3 +11,7 @@ install(PROGRAMS bin/rqt_gui
 install(FILES resource/rqt.png
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/resource
 )
+
+install(DIRECTORY resource/icons
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/resource
+)
