@@ -30,8 +30,9 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import rospkg
 from python_qt_binding.QtCore import Slot, QMimeData, QModelIndex, Qt, qWarning
-from python_qt_binding.QtGui import QDrag, QIcon
+from python_qt_binding.QtGui import QDrag, QIcon, QPixmap
 from python_qt_binding.QtWidgets import QAction, QHeaderView, QMenu, QTreeView
 
 
@@ -51,11 +52,18 @@ class MessageTreeWidget(QTreeView):
         self.header().customContextMenuRequested.connect(
             self.handle_header_view_customContextMenuRequested)
 
-        self._action_item_expand = QAction(QIcon.fromTheme('zoom-in'), 'Expand Selected', self)
+        self._action_item_expand = QAction(QIcon.fromTheme('zoom-in',self.getPixmapIcon('zoom-in')
+            ), 'Expand Selected', self)
         self._action_item_expand.triggered.connect(self._handle_action_item_expand)
-        self._action_item_collapse = QAction(QIcon.fromTheme('zoom-out'), 'Collapse Selected', self)
+        self._action_item_collapse = QAction(QIcon.fromTheme('zoom-out',self.getPixmapIcon('zoom-out')
+            ), 'Collapse Selected', self)
         self._action_item_collapse.triggered.connect(self._handle_action_item_collapse)
         self.customContextMenuRequested.connect(self.handle_customContextMenuRequested)
+
+    def getPixmapIcon(self, name):
+        rp=rospkg.RosPack()
+        icon_file = os.path.join(rp.get_path('rqt_gui'), 'resource', 'icons', name+'.png')
+        return QIcon(QPixmap(icon_file))
 
     def startDrag(self, supportedActions):
         index = self.currentIndex()
