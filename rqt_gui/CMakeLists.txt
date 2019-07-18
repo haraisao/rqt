@@ -8,6 +8,9 @@ catkin_python_setup()
 install(PROGRAMS bin/rqt_gui
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+if(WIN32)
+  install_python_cli(rqt_gui)
+endif()
 install(FILES resource/rqt.png
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/resource
 )
